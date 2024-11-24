@@ -16,6 +16,7 @@ int main()
 
 	while (level01.get() != '\n')
 		col_level++;
+
 	level01.clear(); // מוודאים שאין שגיאות בסטרים
 	level01.seekg(0, ios::beg); // מחזירים את הקריאה להתחלה
 
@@ -64,7 +65,8 @@ int main()
 
 	Robot robot(robot_location);
 	//cout << endl <<  robot.get_location().row << "," << robot.get_location().col << endl;
-	
+	Screen::resetLocation();
+
 		for (int i = 0; i < row_level  ; i++)
 		{
 			for (int j = 0; j < col_level  ; j++)
@@ -78,7 +80,7 @@ int main()
 //-------------------robot_moving--------------//
 
 		
-		for (int i = 0; i < 10; i++)
+		/*for (int i = 0; i < 10; i++)
 		{
 			if (_getch() == Keys::SPECIAL_KEY)
 			{
@@ -117,19 +119,61 @@ int main()
 				}
 
 			}
-		/*	Screen::resetLocation();
-			Screen::setLocation(Location(row, col));*/
+			Screen::resetLocation();
+			Screen::setLocation(Location(row, col));
+			for (int i = 0; i < row_level; i++)
+			{
+				for (int j = 0; j < col_level; j++)
+				{
+					cout << m_level[i][j];
+				}
+				cout << endl;
+			}
+		}*/
+
+		for (int i = 0; i < 10; i++) 
+		{
+			if (_getch() == Keys::SPECIAL_KEY) 
+			{
+				int move = _getch();
+
+				// שמור את המיקום הנוכחי
+				int new_row = row, new_col = col;
+
+				if (move == SpecialKeys::UP && row > 0) {
+					new_row = row - 1;
+				}
+				else if (move == SpecialKeys::DOWN && row < row_level - 1) {
+					new_row = row + 1;
+				}
+				else if (move == SpecialKeys::LEFT && col > 0) {
+					new_col = col - 1;
+				}
+				else if (move == SpecialKeys::RIGHT && col < col_level - 1) {
+					new_col = col + 1;
+				}
+
+				// עדכן את המפה
+				if (m_level[new_row][new_col] == ' ') {
+					m_level[row][col] = ' ';
+					m_level[new_row][new_col] = '/';
+					row = new_row;
+					col = new_col;
+					robot.current_location(Location(row, col));
+				}
+
+				// הדפסה מחדש
+				Screen::resetLocation();
+				for (int i = 0; i < row_level; i++) {
+					for (int j = 0; j < col_level; j++) {
+						cout << m_level[i][j];
+					}
+					cout << endl;
+				}
+			}
 		}
 
-		for (int i = 0; i < row_level; i++)
-		{
-			for (int j = 0; j < col_level; j++)
-			{
-				cout << m_level[i][j];
-			}
-			cout << endl;
-		}
-		
+
 
 
 //------------------end_robot_moving---------------//
