@@ -4,11 +4,11 @@
 #include <iostream>
 #include <string>
 
-class stone
+class Wall
 {
 public:
 
-	stone(Location& location);
+	Wall(Location& location);
 private:
 	Location m_location;
 };

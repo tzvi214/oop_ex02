@@ -1,10 +1,10 @@
 #pragma once
 #include "Location.h"
 
-class rock
+class Rock
 {
 public:
-	rock(Location &location);
+	Rock(Location &location);
 private:
 	Location m_location;
 };

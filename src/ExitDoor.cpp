@@ -1,5 +1,5 @@
 #include "ExitDoor.h"
 
-exitDoor::exitDoor(Location& location)
+ExitDoor::ExitDoor(Location& location)
 	: m_location {location}
 {}

@@ -4,10 +4,10 @@
 #include <iostream>
 #include <string>
 
-class guard
+class Guard
 {
 public:
-	guard(Location& location);
+	Guard(Location& location);
 	Location get_location();
 	void set_location(Location& location);
 	Location get_first_loction();

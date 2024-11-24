@@ -1,11 +1,12 @@
 #pragma once
 #include "Location.h"
 
-class ExitDoor
+
+class Space
 {
 public:
-	ExitDoor(Location& location);
-
+	Space(const Location &location);
+	
 private:
 	Location m_location;
 };

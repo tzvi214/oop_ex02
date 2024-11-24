@@ -1,5 +1,5 @@
 #include "Wall.h"
 
-stone::stone(Location &location)
+Wall::Wall(Location &location)
 	:m_location { location }
 {}
