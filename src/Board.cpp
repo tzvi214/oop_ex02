@@ -4,8 +4,10 @@ using namespace std;
 
 Board::Board(const std::string& fileName)
     : m_fileName(fileName) 
-    
-{}
+       
+{
+    load(fileName);
+}
 
 Board::~Board() {
     freeMemory();
