@@ -1,192 +1,53 @@
-﻿#pragma once
+﻿#include "Board.h"
+#include "Robot.h"
 #include "io.h"
 #include "Location.h"
-#include <fstream>
-#include <iostream>
-#include "Robot.h"
 #include <conio.h>
+#include <iostream>
 using namespace std;
 
-int main()
-{
-	auto level01 = std::ifstream("level01.txt");
+int main() {
+    Board board("level01.txt");
+    board.load("level01.txt");
+    // הדפסת הלוח
+    board.print();
 
+    // יצירת רובוט
+    Location robotLocation = board.getRobotLocation();
+    Robot robot(robotLocation);
 
-	int row_level = 1, col_level = 0;
+    //// תנועת הרובוט
+    int row = robotLocation.row;
+    int col = robotLocation.col;
+    char** level = board.getLevel();
+    int rowCount = board.getRowCount();
+    int colCount = board.getColCount();
 
-	while (level01.get() != '\n')
-		col_level++;
+    for (int i = 0; i < 10; i++) {
+        if (_getch() == Keys::SPECIAL_KEY) {
+            int move = _getch();
 
-	level01.clear(); // מוודאים שאין שגיאות בסטרים
-	level01.seekg(0, ios::beg); // מחזירים את הקריאה להתחלה
+            // עדכון מיקום חדש
+            int newRow = row, newCol = col;
+            if (move == SpecialKeys::UP && row > 0) newRow = row - 1;
+            else if (move == SpecialKeys::DOWN && row < rowCount - 1) newRow = row + 1;
+            else if (move == SpecialKeys::LEFT && col > 0) newCol = col - 1;
+            else if (move == SpecialKeys::RIGHT && col < colCount - 1) newCol = col + 1;
 
-	char c;
-	while (level01 >> c)
-	{
-		if (level01.peek() == '\n')
-			row_level++;
-	}
+            // עדכון הלוח
+            if (level[newRow][newCol] == ' ') {
+                level[row][col] = ' ';
+                level[newRow][newCol] = '/';
+                row = newRow;
+                col = newCol;
+                robot.current_location(Location(row, col));
+            }
 
-	/*cout << "col_level =" << col_level << endl
-		<< "row_level =" << row_level << endl;*/
+            // הדפסת הלוח מחדש
+           
+            board.print();
+        }
+    }
 
-
-	char** m_level = new char* [row_level]; // הקצאת שורות
-	for (int i = 0; i < row_level; i++)
-	{
-		m_level[i] = new char[col_level]; // הקצאת עמודות לכל שורה
-	}
-
-	level01.clear(); // מוודאים שאין שגיאות בסטרים
-	level01.seekg(0, ios::beg); // מחזירים את הקריאה להתחלה
-	
-	Location robot_location;
-	int row = 0, col = 0;
-
-	for (int i = 0; i < row_level && !level01.eof(); i++) 
-	{
-		for (int j = 0; j < col_level && !level01.eof(); j++) 
-		{
-			level01 >> noskipws >> c;
-			if (c == '/')
-			{
-				robot_location = Location(i, j);
-				row = i;
-				col = j;
-			}
-
-			if (c == '\n') 
-				j--; // דלגו על שורות ריקות
-			else 
-			  m_level[i][j] = c;
-			
-		}
-	}
-
-	Robot robot(robot_location);
-	//cout << endl <<  robot.get_location().row << "," << robot.get_location().col << endl;
-	Screen::resetLocation();
-
-		for (int i = 0; i < row_level  ; i++)
-		{
-			for (int j = 0; j < col_level  ; j++)
-			{
-				cout <<   m_level[i][j];
-			}
-			cout << endl;
-		}
-		
-
-//-------------------robot_moving--------------//
-
-		
-		/*for (int i = 0; i < 10; i++)
-		{
-			if (_getch() == Keys::SPECIAL_KEY)
-			{
-				int move = _getch();
-				if (move == SpecialKeys::UP)
-				{
-					m_level[row - 1][col] = '/';
-					m_level[row][col] = ' ';
-					row--;
-					robot.current_location(Location(row, col));
-				}
-				else if (move == SpecialKeys::DOWN)
-				{
-					m_level[row + 1][col] = '/';
-					m_level[row][col] = ' ';
-					row++;
-					robot.current_location(Location(row, col));
-
-
-				}
-				else if (move == SpecialKeys::RIGHT)
-				{
-					m_level[row][col + 1] = '/';
-					m_level[row][col] = ' ';
-					col++;
-					robot.current_location(Location(row, col));
-
-				}
-				else if (move == SpecialKeys::LEFT)
-				{
-					m_level[row][col - 1] = '/';
-					m_level[row][col] = ' ';
-					col--;
-					robot.current_location(Location(row, col));
-
-				}
-
-			}
-			Screen::resetLocation();
-			Screen::setLocation(Location(row, col));
-			for (int i = 0; i < row_level; i++)
-			{
-				for (int j = 0; j < col_level; j++)
-				{
-					cout << m_level[i][j];
-				}
-				cout << endl;
-			}
-		}*/
-
-		for (int i = 0; i < 10; i++) 
-		{
-			if (_getch() == Keys::SPECIAL_KEY) 
-			{
-				int move = _getch();
-
-				// שמור את המיקום הנוכחי
-				int new_row = row, new_col = col;
-
-				if (move == SpecialKeys::UP && row > 0) {
-					new_row = row - 1;
-				}
-				else if (move == SpecialKeys::DOWN && row < row_level - 1) {
-					new_row = row + 1;
-				}
-				else if (move == SpecialKeys::LEFT && col > 0) {
-					new_col = col - 1;
-				}
-				else if (move == SpecialKeys::RIGHT && col < col_level - 1) {
-					new_col = col + 1;
-				}
-
-				// עדכן את המפה
-				if (m_level[new_row][new_col] == ' ') {
-					m_level[row][col] = ' ';
-					m_level[new_row][new_col] = '/';
-					row = new_row;
-					col = new_col;
-					robot.current_location(Location(row, col));
-				}
-
-				// הדפסה מחדש
-				Screen::resetLocation();
-				for (int i = 0; i < row_level; i++) {
-					for (int j = 0; j < col_level; j++) {
-						cout << m_level[i][j];
-					}
-					cout << endl;
-				}
-			}
-		}
-
-
-
-
-//------------------end_robot_moving---------------//
-
-
-
-
-		for (int i = 0; i < row_level; i++) 
-		{
-			delete[] m_level[i]; // שחרור עמודות של כל שורה
-		}
-		delete[] m_level; // שחרור השורות
-	
-
-		return 0;
+    return 0;
 }
