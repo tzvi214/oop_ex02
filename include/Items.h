@@ -18,7 +18,7 @@ public:
 	bool is_robot();
 	bool is_guard();
 	bool is_space();
-
+	bool is_bomb();
 private:
 	Rock m_rock;
 	ExitDoor m_exitDoor;

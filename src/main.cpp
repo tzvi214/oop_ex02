@@ -8,11 +8,9 @@ using namespace std;
 
 int main() {
     Board board("level01.txt");
-   // board.load("level01.txt");
-    // הדפסת הלוח
+   
     board.print();
 
-    // יצירת רובוט
     Location robotLocation = board.getRobotLocation();
     Robot robot(robotLocation);
 

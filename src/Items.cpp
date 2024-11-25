@@ -2,7 +2,7 @@
 
 
 Items::Items(Location& location, char c)
-    : m_rock(location), m_exitDoor(location), m_bomb(location, 0),
+    : m_rock(location), m_exitDoor(location), m_bomb(location, 5),
     m_wall(location), m_robot(location), m_guard(location), m_space(location),
     m_is_rock(false), m_is_exitDoor(false), m_is_bomb(false),
     m_is_wall(false), m_is_robot(false), m_is_guard(false), m_is_space(false)
@@ -60,5 +60,10 @@ bool Items::is_guard()
 bool Items::is_space()
 {
 	return m_is_space;
+}
+
+bool Items::is_bomb()
+{
+    return m_is_bomb;
 }
 
