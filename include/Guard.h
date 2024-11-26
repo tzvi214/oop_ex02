@@ -7,10 +7,11 @@
 class Guard
 {
 public:
-	Guard(Location& location);
+	Guard(const Location& location);
 	Location get_location();
 	void set_location(Location& location);
 	Location get_first_loction();
+	
  private:
 	 Location m_location;
 	 Location m_first_loction;

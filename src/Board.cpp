@@ -2,9 +2,8 @@
 #include <io.h>
 using namespace std;
 
-Board::Board(const std::string& fileName)
-    : m_fileName(fileName) 
-       
+Board::Board(const string& fileName)
+    : m_fileName(fileName)        
 {
     load(fileName);
 }
@@ -13,7 +12,7 @@ Board::~Board() {
     freeMemory();
 }
 
-void Board::load(const std::string& filename) {
+void Board::load(const string& filename) {
     auto file = std::ifstream(filename); // שימוש ב-auto כמו בקוד שלך
     if (!file) {
         std::cerr << "Error: Cannot open file " << filename << std::endl;
@@ -48,14 +47,17 @@ void Board::load(const std::string& filename) {
     file.seekg(0, std::ios::beg); // מחזירים את הקריאה להתחלה
 
     // מילוי המערך בתוכן הקובץ
-    int row = 0, col = 0;
     for (int i = 0; i < m_rowCount && !file.eof(); i++) {
         for (int j = 0; j < m_colCount && !file.eof(); j++) {
             file >> std::noskipws >> c;
             if (c == '/') {
                 m_robotLocation = Location(i, j);
-                row = i;
-                col = j;
+             
+            }
+            if (c == '!')
+            {
+                m_guardsMatrix.push_back(Guard(Location(i,j)));
+
             }
 
             if (c == '\n') {

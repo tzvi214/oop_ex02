@@ -19,6 +19,7 @@ public:
 	bool is_guard();
 	bool is_space();
 	bool is_bomb();
+	void print_char();
 private:
 	Rock m_rock;
 	ExitDoor m_exitDoor;

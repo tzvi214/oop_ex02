@@ -16,5 +16,19 @@ void Bomb::setTime(int time)
 
 bool Bomb::isExploding() const 
 {
-    return (m_time == 0);
+   
+        return (m_time == 0);
+
+}
+
+bool Bomb::isExploded() const
+{
+    return (m_time < 0);
+}
+
+void Bomb::renwTime()
+{
+   
+    m_time--;
+   
 }

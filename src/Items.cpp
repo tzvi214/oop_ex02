@@ -67,3 +67,29 @@ bool Items::is_bomb()
     return m_is_bomb;
 }
 
+void Items::print_char()
+{
+    if (m_is_rock)
+        std::cout << '@';
+
+    else if (m_is_exitDoor)
+        std::cout << 'D';
+
+    else if (m_is_wall)
+        std::cout << '#';
+
+    else if (m_is_robot)
+      std::cout << '/';
+
+    else if (m_is_guard)
+       std::cout << '!';
+
+    else if (m_is_space)
+      std::cout << ' ';
+
+    else if (m_is_bomb)
+    std::cout << 'B';
+
+
+}
+

@@ -1,6 +1,6 @@
 #include "Guard.h"
 
-Guard::Guard(Location& location)
+Guard::Guard(const Location& location)
 : m_location(location), m_first_loction (location)
 {}
 
