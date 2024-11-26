@@ -6,6 +6,7 @@ namespace Keys
 {
 constexpr int ESCAPE = 27;
 constexpr int SPECIAL_KEY = 224;
+constexpr int B = 66; //אני הוספי את זה
 }
 
 namespace SpecialKeys

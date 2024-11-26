@@ -13,58 +13,36 @@
 #include <vector>
 #include "Manger.h"
 
+
+
 void Manger::ran()
 {
     Board board("level01.txt");
 
     board.print();
-
+    Manger manger;
     Location robot_location = board.getRobot_ferst_Location();
     Robot robot(robot_location);
 
-    vector <Guard> guards_location = board.get_gard_ferst_location();
+   // vector <Guard> guards_location = board.get_gard_ferst_location();
+    m_guardsMatrix = board.get_guard_ferst_location();
     vector <Bomb> bombs_location;
 
 
-
-    //// תנועת הרובוט
-    int row = robot_location.row;
-    int col = robot_location.col;
     char** level = board.getLevel();
-    int rowCount = board.getRowCount();
-    int colCount = board.getColCount();
+   
 
     for (int i = 0; i < 10; i++)
     {
 
-        if (_getch() == Keys::SPECIAL_KEY)
-        {
-            int move = _getch();
 
-            // עדכון מיקום חדש
-            int newRow = row, newCol = col;
-            if (move == SpecialKeys::UP && row > 0) newRow = row - 1;
-            else if (move == SpecialKeys::DOWN && row < rowCount - 1) newRow = row + 1;
-            else if (move == SpecialKeys::LEFT && col > 0) newCol = col - 1;
-            else if (move == SpecialKeys::RIGHT && col < colCount - 1) newCol = col + 1;
 
-            // עדכון הלוח
-            if (level[newRow][newCol] == ' ') {
-                level[row][col] = ' ';
-                level[newRow][newCol] = '/';
-                row = newRow;
-                col = newCol;
-                robot.setLocation(Location(row, col));
-            }
-
-            // הדפסת הלוח מחדש
-
-            board.print();
-        }
-
-        else //its a bomb
-            bombs_location.push_back(Bomb(robot.get_location()));
-
+       robot.move(board, manger);
+        
+       if (robot.dropBomb())
+       {
+           bombs_location.push_back(Bomb(robot.get_location()));
+       }
 
 
         int size = bombs_location.size();
@@ -89,6 +67,6 @@ void Manger::ran()
             bombs_location.at(i).renwTime();
 
         }
-        board.print();
+       
     }
 }

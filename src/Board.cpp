@@ -83,9 +83,9 @@ void Board::print() const
     }
 }
 
-char Board::get_char_Index(const Location& location)
+bool Board::is_legaleMove(const Location& location)
 {
-    return m_level[location.row][location.col];
+    return (m_level[location.row][location.col] == ' ' || m_level[location.row][location.col] != '#');
 }
 
 bool Board::isInArry(const Location& location)
@@ -94,10 +94,6 @@ bool Board::isInArry(const Location& location)
     return (location.col > 0 && location.row > 0 && location.col <= m_colCount && location.row <= m_rowCount);
 }
 
-void Board::setIndex_inLocation(Location& location, char c)
-{
-    m_level[location.row][location.col] = c;
-}
 
 void Board::freeMemory() {
     for (int i = 0; i < m_rowCount; i++) {

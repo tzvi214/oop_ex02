@@ -18,10 +18,10 @@ public:
    int getRowCount() const { return m_rowCount; }
     int getColCount() const { return m_colCount; }
     Location getRobot_ferst_Location() const { return m_robotLocation; }
-    vector <Guard> get_gard_ferst_location() const { return m_guardsMatrix; }
-    char get_char_Index(const Location& location);
+    vector <Guard> get_guard_ferst_location() const { return m_guardsMatrix; }
+    bool is_legaleMove(const Location& location);
     bool isInArry(const Location& location);
-    void setIndex_inLocation(Location &location, char c);
+   
 private:
     string m_fileName;
     int m_rowCount ;
