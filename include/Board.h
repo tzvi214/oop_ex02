@@ -5,7 +5,7 @@
 #include <string>
 #include"Guard.h"
 #include <vector>
-
+#include "io.h"
 using namespace std;
 
 class Board {
@@ -17,16 +17,19 @@ public:
     char** getLevel() const { return m_level; }
    int getRowCount() const { return m_rowCount; }
     int getColCount() const { return m_colCount; }
-    Location getRobotLocation() const { return m_robotLocation; }
-    vector <Guard> get_guardMatrix() const { return m_guardsMatrix; }
+    Location getRobot_ferst_Location() const { return m_robotLocation; }
+    vector <Guard> get_gard_ferst_location() const { return m_guardsMatrix; }
+    char get_char_Index(const Location& location);
+    bool isInArry(const Location& location);
+    void setIndex_inLocation(Location &location, char c);
 private:
     string m_fileName;
-    char** m_level = nullptr;
-    int m_rowCount = 0;
-    int m_colCount = 0;
+    int m_rowCount ;
+    int m_colCount ;
     Location m_robotLocation;
-    void load(const std::string& filename);
+    char** m_level ;
     vector <Guard> m_guardsMatrix;
 
+    void load(const string& filename);
     void freeMemory();
 };

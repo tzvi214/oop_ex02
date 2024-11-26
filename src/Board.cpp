@@ -13,7 +13,7 @@ Board::~Board() {
 }
 
 void Board::load(const string& filename) {
-    auto file = std::ifstream(filename); // שימוש ב-auto כמו בקוד שלך
+    auto file = std::ifstream(filename); 
     if (!file) {
         std::cerr << "Error: Cannot open file " << filename << std::endl;
         return;
@@ -71,7 +71,7 @@ void Board::load(const string& filename) {
 
 void Board::print() const 
 {
-    Screen::resetLocation();
+   Screen::resetLocation();
     for (int i = 0; i < m_rowCount; i++) 
     {
 
@@ -81,6 +81,22 @@ void Board::print() const
         }
         cout << endl;
     }
+}
+
+char Board::get_char_Index(const Location& location)
+{
+    return m_level[location.row][location.col];
+}
+
+bool Board::isInArry(const Location& location)
+{
+    
+    return (location.col > 0 && location.row > 0 && location.col <= m_colCount && location.row <= m_rowCount);
+}
+
+void Board::setIndex_inLocation(Location& location, char c)
+{
+    m_level[location.row][location.col] = c;
 }
 
 void Board::freeMemory() {
