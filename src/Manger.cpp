@@ -21,11 +21,10 @@ void Manger::ran()
 
     board.print();
     Manger manger;
-    Location robot_location = board.getRobot_ferst_Location();
+    Location robot_location = board.getRobot_first_Location();
     Robot robot(robot_location);
 
-   // vector <Guard> guards_location = board.get_gard_ferst_location();
-    m_guardsMatrix = board.get_guard_ferst_location();
+    m_guardsMatrix = board.get_guard_first_location();
     vector <Bomb> bombs_location;
 
 
@@ -44,29 +43,34 @@ void Manger::ran()
            bombs_location.push_back(Bomb(robot.get_location()));
        }
 
-
-        int size = bombs_location.size();
-        for (int i = 0; i < size; i++)
-        {
-            if (bombs_location.at(i).isExploded())
-            {
-                level[bombs_location.at(i).getLocation().row][bombs_location.at(i).getLocation().col] = ' ';
-                bombs_location.erase(bombs_location.begin());
-                i--;
-                size--;
-                continue;
-            }
-
-            else if (bombs_location.at(i).isExploding())
-                level[bombs_location.at(i).getLocation().row][bombs_location.at(i).getLocation().col] = '*';
+       for (int i = 0; i < bombs_location.size(); i++)
+       {
 
 
-            else
-                level[bombs_location.at(i).getLocation().row][bombs_location.at(i).getLocation().col] = '0' + bombs_location.at(i).showTime();
+       }
 
-            bombs_location.at(i).renwTime();
+        //int size = bombs_location.size();
+        //for (int i = 0; i < size; i++)
+        //{
+        //    if (bombs_location.at(i).isExploded())
+        //    {
+        //        level[bombs_location.at(i).getLocation().row][bombs_location.at(i).getLocation().col] = ' ';
+        //        bombs_location.erase(bombs_location.begin());
+        //        i--;
+        //        size--;
+        //        continue;
+        //    }
 
-        }
+        //    else if (bombs_location.at(i).isExploding())
+        //        level[bombs_location.at(i).getLocation().row][bombs_location.at(i).getLocation().col] = '*';
+
+
+        //    else
+        //        level[bombs_location.at(i).getLocation().row][bombs_location.at(i).getLocation().col] = '0' + bombs_location.at(i).getTime();
+
+        //    bombs_location.at(i).renwTime();
+
+        //}
        
     }
 }

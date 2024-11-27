@@ -31,7 +31,7 @@ void Robot::print(const Location& location)
 
 bool Robot::check_if_ligel_move( Board & board)
 {
-	return (board.isInArry(m_location) && board.is_legaleMove(m_location));
+	return (board.isInArray(m_location) );
 }
 
 void Robot::deleteOld_location(Location& location)
@@ -45,81 +45,112 @@ void Robot::move(Location& location)
 }
 void Robot::move(Board& board, Manger& manager)
 {
-	
-	
+
+	set_dropBomb(false);
+
 	int row = m_location.row;
 	int col = m_location.col;
-    int move = _getch();
+	bool endTurn = false;
 
+	int move = _getch();
 	if (move == Keys::B)
-		set_dropBomb(true);
-
-	else if (move == Keys::SPECIAL_KEY)
 	{
+		set_dropBomb(true);
+		endTurn = true;
+	}
+
+
+	while(!endTurn)
+	{
+		
+		 if (move == Keys::SPECIAL_KEY)
+		{
 
 			move = _getch();
 			if (move == SpecialKeys::UP) //newRow = row - 1;
 			{
-				if (check_if_ligel_move(board))
+				if (board.isWall(Location(m_location.row - 1, m_location.col)) &&
+					board.isInArray(Location(m_location.row - 1, m_location.col)))
 				{
 					deleteOld_location(m_location);
 					row--;
 
 					setLocation(Location(row, col));
 					print(Location(row, col));
-
+					endTurn = true;
 				}
 				else // צריך שיאשר על ידי הקשה על רווח
 				{
+					move = _getch();
+					if (move == (int)' ')
+						endTurn = true;
+
+					
 				}
 			}
 
 			else if (move == SpecialKeys::DOWN)// newRow = row + 1;
 			{
-				if (check_if_ligel_move(board))
+				if (board.isWall(Location(m_location.row + 1, m_location.col)) &&
+					board.isInArray(Location(m_location.row + 1, m_location.col)))
+
 				{
 					deleteOld_location(m_location);
 					row++;
 
 					setLocation(Location(row, col));
 					print(Location(row, col));
+					endTurn = true;
+
 
 				}
 				else // צריך שיאשר על ידי הקשה על רווח
 				{
+					move = _getch();
+					if (move == (int)' ')
+						endTurn = true;
 				}
 
 			}
 			else if (move == SpecialKeys::LEFT) //newCol = col - 1;
 			{
-				if (check_if_ligel_move(board))
+				if (board.isWall(Location(m_location.row, m_location.col - 1)) &&
+					board.isInArray(Location(m_location.row, m_location.col - 1)))
 				{
 					deleteOld_location(m_location);
 					col--;
 
 					setLocation(Location(row, col));
 					print(Location(row, col));
-
+					endTurn = true;
 				}
 				else // צריך שיאשר על ידי הקשה על רווח
 				{
+					move = _getch();
+					if (move == (int)' ')
+						endTurn = true;
 				}
 			}
 			else if (move == SpecialKeys::RIGHT) //newCol = col + 1;
 			{
-				if (check_if_ligel_move(board))
+				if (board.isWall(Location(m_location.row, m_location.col + 1)) &&
+					board.isInArray(Location(m_location.row, m_location.col + 1)))
+
 				{
 					deleteOld_location(m_location);
 					col++;
 					setLocation(Location(row, col));
 					print(Location(row, col));
-
-
+					endTurn = true;
 				}
 				else // צריך שיאשר על ידי הקשה על רווח
 				{
+					move = _getch();
+					if (move == (int)' ')
+						endTurn = true;
 				}
-			}		
+			}
+		}
 	}
 }
 

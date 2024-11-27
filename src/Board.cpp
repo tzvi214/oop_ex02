@@ -83,12 +83,12 @@ void Board::print() const
     }
 }
 
-bool Board::is_legaleMove(const Location& location)
+bool Board::isWall(const Location& location)
 {
-    return (m_level[location.row][location.col] == ' ' || m_level[location.row][location.col] != '#');
+    return (m_level[location.row][location.col] != '#');
 }
 
-bool Board::isInArry(const Location& location)
+bool Board::isInArray(const Location& location)
 {
     
     return (location.col > 0 && location.row > 0 && location.col <= m_colCount && location.row <= m_rowCount);

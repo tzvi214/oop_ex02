@@ -1,20 +1,29 @@
 #pragma once
 #include "Location.h"
+#include <vector>
+#include "Board.h"
+using namespace std;
 
 class Bomb 
 {
 public:
-    Bomb(const Location& location, int time =5 );
+    Bomb(const Location& location, int time =5);
 
     int getTime() const;             
-    void setTime(int time);
     bool isExploding() const;  
     bool isExploded() const;
-    void renwTime();
+    void renewTime();
+    void print(Location &location, char c);
+    void handle_NowExploding(Board& board);
+    void set_explodingLocation(Board& board);
+    void printTime();
     Location getLocation() { return m_location; }
-    int showTime() {return m_time ; }
+    vector <Location> handleExploded();
 
 private:
-    Location m_location;             
-    int m_time;      
+    Location m_location;   
+    vector <Location> m_explodingLocation;
+    int m_time;     
+
+    
 };
