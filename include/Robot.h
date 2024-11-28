@@ -14,15 +14,15 @@ public:
 	void print(const Location & location );
 	bool check_if_legal_move( Board& board);
 	void deleteOld_location(Location& location);
+	void setLife(int life);
 	void move(Location& location);
 	void play(Board& board);// הוא לא צריך manger
 	void set_dropBomb( bool flag);
 	void setLocation(Location location);
-	
-	bool touch() const { m_touch; }
+	bool touch() const {return m_touch; }
 	bool dropBomb();
 	bool touch();
-	
+	int getLife() const { return m_life; }
 private:
 	Location m_location;
 	Location m_first_location;

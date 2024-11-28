@@ -12,6 +12,11 @@
 #include <iostream>
 #include <vector>
 #include "Manger.h"
+#include <thread>
+#include <chrono>
+using namespace std::chrono_literals;
+
+
 
 
 void Manger::ran()
@@ -65,5 +70,13 @@ void Manger::ran()
 
        }
   
+           for (int i = 0; i < m_guardsMatrix.size(); i++)
+           {
+               m_guardsMatrix[i].move(board);
+               std::this_thread::sleep_for(500ms);
+           }
+
+
+
     }
 }

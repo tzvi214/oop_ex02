@@ -40,6 +40,10 @@ void Robot::deleteOld_location(Location& location)
 	Screen::setLocation(location);
 	cout << ' ';
 }
+void Robot::setLife(int life)
+{
+	m_life = life;
+}
 void Robot::move(Location& location)
 {
 	m_location = location;
@@ -89,6 +93,7 @@ void Robot::play(Board& board)
 					m_touch = true;
 					break;
 				}
+				
 
 				deleteOld_location(m_location);
 				setLocation(newLocation);
