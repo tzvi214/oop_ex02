@@ -14,27 +14,22 @@
 #include "Manger.h"
 
 
-
 void Manger::ran()
 {
     Board board("level01.txt");
 
     board.print();
     Manger manger;
-    Location robot_location = board.getRobot_first_Location();
+    Location robot_location = board.getRobotFirstLoc();
     Robot robot(robot_location);
 
-    m_guardsMatrix = board.get_guard_first_location();
+    m_guardsMatrix = board.getVecGuardFirstLoc();
     vector <Bomb> bombs_location;
 
 
-    char** level = board.getLevel();
-   
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 15; i++)
     {
-
-
 
        robot.move(board, manger);
         
@@ -45,32 +40,25 @@ void Manger::ran()
 
        for (int i = 0; i < bombs_location.size(); i++)
        {
+           if (bombs_location.at(i).isExploded())
+           {
 
+               vector <Location> indexOfExploded = bombs_location.at(i).handleExploded();
+               // כאן צריך לבדוק האם אוביקטים התפצצו
+               bombs_location.erase(bombs_location.begin());
+               i--;
+           }
+           else if (bombs_location.at(i).isExploding())
+           {
+               bombs_location.at(i).handle_NowExploding(board);
+
+           }
+           else
+           {
+               bombs_location.at(i).renewTime();
+           }
 
        }
-
-        //int size = bombs_location.size();
-        //for (int i = 0; i < size; i++)
-        //{
-        //    if (bombs_location.at(i).isExploded())
-        //    {
-        //        level[bombs_location.at(i).getLocation().row][bombs_location.at(i).getLocation().col] = ' ';
-        //        bombs_location.erase(bombs_location.begin());
-        //        i--;
-        //        size--;
-        //        continue;
-        //    }
-
-        //    else if (bombs_location.at(i).isExploding())
-        //        level[bombs_location.at(i).getLocation().row][bombs_location.at(i).getLocation().col] = '*';
-
-
-        //    else
-        //        level[bombs_location.at(i).getLocation().row][bombs_location.at(i).getLocation().col] = '0' + bombs_location.at(i).getTime();
-
-        //    bombs_location.at(i).renwTime();
-
-        //}
-       
+  
     }
 }

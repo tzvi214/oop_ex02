@@ -16,7 +16,6 @@ public:
     void print(Location &location, char c);
     void handle_NowExploding(Board& board);
     void set_explodingLocation(Board& board);
-    void printTime();
     Location getLocation() { return m_location; }
     vector <Location> handleExploded();
 

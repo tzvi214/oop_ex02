@@ -16,7 +16,7 @@ public:
 	bool check_if_ligel_move( Board& board);
 	void deleteOld_location(Location& location);
 	void move(Location& location);
-	void move(Board& board, Manger& manager);
+	void move(Board& board, Manger& manager);// הוא לא צריך manger
 	void set_dropBomb( bool flag);
 	bool dropBomb();
 

@@ -17,10 +17,10 @@ public:
     char** getLevel() const { return m_level; }
    int getRowCount() const { return m_rowCount; }
     int getColCount() const { return m_colCount; }
-    Location getRobot_first_Location() const { return m_robotLocation; }
-    vector <Guard> get_guard_first_location() const { return m_guardsMatrix; }
+    Location getRobotFirstLoc() const { return m_robotLocation; }
+    vector <Guard> getVecGuardFirstLoc() const { return m_guardsMatrix; }
     bool isWall(const Location& location);
-    bool isInArray(const Location& location);
+    bool isInLevel(const Location& location);
    
 private:
     string m_fileName;
