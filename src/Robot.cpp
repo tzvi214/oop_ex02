@@ -4,6 +4,7 @@
 #include <conio.h>
 Robot::Robot(Location& location)
 	:m_location {location}, m_first_location{location}, m_drop_bomb{false}
+	, m_touch{false}, m_life{5}
 {
 }
 
@@ -80,8 +81,15 @@ void Robot::play(Board& board)
 				newCol++;
 
 			Location newLocation(newRow, newCol);
-			if (board.isInLevel(newLocation) && !board.isWall(newLocation))
+			if (board.isInLevel(newLocation) && !board.isWall(newLocation)
+				                            && !board.isRock(newLocation))
 			{
+				if (board.isGuard(newLocation))
+				{
+					m_touch = true;
+					break;
+				}
+
 				deleteOld_location(m_location);
 				setLocation(newLocation);
 				print(newLocation);
@@ -103,5 +111,10 @@ void Robot::set_dropBomb(bool flag)
 bool Robot::dropBomb()
 {
 	return m_drop_bomb;
+}
+
+bool Robot::touch()
+{
+	return m_touch;
 }
 

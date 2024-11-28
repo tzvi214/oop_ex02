@@ -9,7 +9,6 @@ class Robot
 {
 public:
 	Robot(Location &location);
-	void setLocation(Location location);
 	Location get_location();
 	Location get_first_location();
 	void print(const Location & location );
@@ -18,11 +17,16 @@ public:
 	void move(Location& location);
 	void play(Board& board);// הוא לא צריך manger
 	void set_dropBomb( bool flag);
+	void setLocation(Location location);
+	
+	bool touch() const { m_touch; }
 	bool dropBomb();
-
+	bool touch();
+	
 private:
 	Location m_location;
 	Location m_first_location;
 	bool m_drop_bomb;
-	
+	bool m_touch;
+	int m_life;
 };
