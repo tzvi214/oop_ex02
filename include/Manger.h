@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include "Guard.h"
-//#include "Robot.h"
 
 class Manger
 {

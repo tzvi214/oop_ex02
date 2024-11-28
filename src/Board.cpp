@@ -1,103 +1,104 @@
-#include "Board.h"
-#include <io.h>
-using namespace std;
+#include <Board.h>
 
-Board::Board(const string& fileName)
-    : m_fileName(fileName)        
+
+Board::Board(const std::string& fileName) :m_fileName{ fileName }, m_robotLoc{0,0}, m_numRow{0}, m_numCol{0}
 {
-    load(fileName);
-}
-
-Board::~Board() {
-    freeMemory();
-}
-
-void Board::load(const string& filename) {
-    auto file = std::ifstream(filename); 
+    auto file = ifstream(fileName);
     if (!file) {
-        std::cerr << "Error: Cannot open file " << filename << std::endl;
+        std::cerr << "Error: Cannot open file " << fileName << endl;
         return;
     }
 
-    // חישוב מספר השורות והעמודות
-    m_rowCount = 1;
-    m_colCount = 0;
-
-    while (file.get() != '\n') {
-        m_colCount++;
-    }
-
-    file.clear(); // מוודאים שאין שגיאות בסטרים
-    file.seekg(0, std::ios::beg); // מחזירים את הקריאה להתחלה
-
-    char c;
-    while (file >> c) {
-        if (file.peek() == '\n') {
-            m_rowCount++;
-        }
-    }
-
-    // הקצאת זיכרון למערך הדו-ממדי
-    m_level = new char* [m_rowCount];
-    for (int i = 0; i < m_rowCount; i++) {
-        m_level[i] = new char[m_colCount];
-    }
-
-    file.clear(); // מוודאים שאין שגיאות בסטרים
-    file.seekg(0, std::ios::beg); // מחזירים את הקריאה להתחלה
-
-    // מילוי המערך בתוכן הקובץ
-    for (int i = 0; i < m_rowCount && !file.eof(); i++) {
-        for (int j = 0; j < m_colCount && !file.eof(); j++) {
-            file >> std::noskipws >> c;
-            if (c == '/') {
-                m_robotLocation = Location(i, j);
-             
-            }
-            if (c == '!')
-            {
-                m_guardsMatrix.push_back(Guard(Location(i,j)));
-
-            }
-
-            if (c == '\n') {
-                j--; // דילוג על ירידות שורה
-            } else {
-                m_level[i][j] = c;
-            }
-        }
-    }
-}
-
-void Board::print() const 
-{
-   Screen::resetLocation();
-    for (int i = 0; i < m_rowCount; i++) 
+    string line;
+    while (getline(file, line)) // reading file.
     {
+        updateLevel(line);
+        m_numRow++;
+        m_numCol = static_cast<int>(line.size());// Convert size_t to int explicitly to avoid potential data loss warning
+    }
+    m_numRow--;
 
-        for (int j = 0; j < m_colCount; j++) 
-        {
-            cout << m_level[i][j];
-        }
-        cout << endl;
+}
+
+int Board::getRows()
+{
+    return m_numRow;
+}
+
+void Board::updateLevel(const string line)
+{
+    m_level.push_back(line);
+    for (int col = 0; col < line.size(); col++)
+    {
+        Location loc(m_numRow, col);
+        if (line[col] == '/') m_robotLoc = loc;
+        else if (line[col] == '!') m_guardLoc.push_back(loc);
+        // else if (line[col] == '@') m_rockLoc.push_back(loc);
     }
 }
 
-bool Board::isWall(const Location& location)
+void Board::print() const
 {
-    return (m_level[location.row][location.col] == '#');
+    for (int i = 0; i < m_level.size(); i++)
+        cout << m_level[i] << endl;
+    cout << "m_numRow" << m_numRow << endl;
+    cout << "m_numCol" << m_numCol << endl;
+
 }
 
-bool Board::isInLevel(const Location& location)
+bool Board::isInLevel(Location loc) const
 {
-    
-    return (location.col > 0 && location.row > 0 && location.col <= m_colCount && location.row <= m_rowCount);
+    return loc.row >= 0 && loc.row <= m_numRow && loc.col >= 0 && loc.col <= m_numCol;
 }
 
 
-void Board::freeMemory() {
-    for (int i = 0; i < m_rowCount; i++) {
-        delete[] m_level[i];
-    }
-    delete[] m_level;
+Location Board::getRobotFirstLoc() const
+{
+    return m_robotLoc;
 }
+
+vector<Location> Board::getVecGuardFirstLoc() const
+{
+    return m_guardLoc;
+}
+
+void Board::setLocation(Location oldLoc, Location newLoc, char c)
+{
+    m_level[oldLoc.row][oldLoc.col] = ' ';
+    m_level[newLoc.row][newLoc.col] = c;
+}
+
+bool Board::isWall(Location loc) const
+{
+    return m_level[loc.row][loc.col] == '#';
+}
+
+bool Board::isSpace(Location loc) const
+{
+    return m_level[loc.row][loc.col] == ' ';
+}
+
+bool Board::isRobot(Location loc)const
+{
+    return m_level[loc.row][loc.col] == '/';
+}
+
+bool Board::isRock(Location loc)const
+{
+    return m_level[loc.row][loc.col] == '@';
+
+}
+
+bool Board::isDoor(Location loc)const
+{
+    return m_level[loc.row][loc.col] == 'D';
+
+}
+bool Board::isGuard(Location loc) const
+{
+    return m_level[loc.row][loc.col] == '!';
+}
+//vector<Location> board::getVecRock() const
+//{
+//    return m_rockLoc;
+//}

@@ -1,35 +1,36 @@
 #pragma once
-#include "Location.h"
-#include <fstream>
 #include <iostream>
 #include <string>
-#include"Guard.h"
 #include <vector>
-#include "io.h"
+#include "Location.h"
+#include <fstream>
 using namespace std;
 
-class Board {
+class Board
+{
 public:
-    Board(const std::string& fileName);
-    ~Board();
+	Board(const string&);
+	int getRows();
+	void print() const;
+	void setLocation(Location oldLoc, Location newLoc, char);
+	bool isSpace(Location) const;
+	bool isRobot(Location)const;
+	bool isRock(Location)const;
+	bool isDoor(Location)const;
+	bool isGuard(Location) const;
+	bool isWall(Location) const;
+	bool isInLevel(Location) const;
+	Location getRobotFirstLoc() const;
+	vector<Location> getVecGuardFirstLoc() const;
 
-    void print() const;
-    char** getLevel() const { return m_level; }
-   int getRowCount() const { return m_rowCount; }
-    int getColCount() const { return m_colCount; }
-    Location getRobotFirstLoc() const { return m_robotLocation; }
-    vector <Guard> getVecGuardFirstLoc() const { return m_guardsMatrix; }
-    bool isWall(const Location& location);
-    bool isInLevel(const Location& location);
-   
 private:
-    string m_fileName;
-    int m_rowCount ;
-    int m_colCount ;
-    Location m_robotLocation;
-    char** m_level ;
-    vector <Guard> m_guardsMatrix;
+	string m_fileName;
+	vector<string> m_level;
+	vector<Location> m_guardLoc;
+	Location m_robotLoc;
+	int m_numRow;
+	int m_numCol;
 
-    void load(const string& filename);
-    void freeMemory();
+	void updateLevel(const string);
+
 };

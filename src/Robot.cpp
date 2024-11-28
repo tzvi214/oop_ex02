@@ -29,7 +29,7 @@ void Robot::print(const Location& location)
 	cout << '/';
 }
 
-bool Robot::check_if_ligel_move( Board & board)
+bool Robot::check_if_legal_move( Board & board)
 {
 	return (board.isInLevel(m_location) );
 }
@@ -43,7 +43,7 @@ void Robot::move(Location& location)
 {
 	m_location = location;
 }
-void Robot::move(Board& board, Manger& manager)
+void Robot::play(Board& board)
 {
 
 	set_dropBomb(false);

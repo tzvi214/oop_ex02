@@ -13,10 +13,10 @@ public:
 	Location get_location();
 	Location get_first_location();
 	void print(const Location & location );
-	bool check_if_ligel_move( Board& board);
+	bool check_if_legal_move( Board& board);
 	void deleteOld_location(Location& location);
 	void move(Location& location);
-	void move(Board& board, Manger& manager);// הוא לא צריך manger
+	void play(Board& board);// הוא לא צריך manger
 	void set_dropBomb( bool flag);
 	bool dropBomb();
 

@@ -23,7 +23,12 @@ void Manger::ran()
     Location robot_location = board.getRobotFirstLoc();
     Robot robot(robot_location);
 
-    m_guardsMatrix = board.getVecGuardFirstLoc();
+
+    for (int i = 0; i < board.getVecGuardFirstLoc().size(); i++)
+    {
+        m_guardsMatrix.push_back(board.getVecGuardFirstLoc().at(i));
+    }
+
     vector <Bomb> bombs_location;
 
 
@@ -31,7 +36,7 @@ void Manger::ran()
     for (int i = 0; i < 15; i++)
     {
 
-       robot.move(board, manger);
+       robot.play(board);
         
        if (robot.dropBomb())
        {
