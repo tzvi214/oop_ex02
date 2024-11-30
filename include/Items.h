@@ -25,7 +25,7 @@ private:
 	ExitDoor m_exitDoor;
 	Bomb m_bomb;
 	Wall m_wall;
-	Robot m_robot;
+	Robot robot;
 	Guard m_guard;
 	Space m_space;
 	

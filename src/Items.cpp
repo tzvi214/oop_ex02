@@ -3,7 +3,7 @@
 
 Items::Items(Location& location, char c)
     : m_rock(location), m_exitDoor(location), m_bomb(location, 5),
-    m_wall(location), m_robot(location), m_guard(location), m_space(location),
+    m_wall(location), robot(location), m_guard(location), m_space(location),
     m_is_rock(false), m_is_exitDoor(false), m_is_bomb(false),
     m_is_wall(false), m_is_robot(false), m_is_guard(false), m_is_space(false)
 {

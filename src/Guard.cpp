@@ -1,9 +1,9 @@
-#include "Guard.h"
+﻿#include "Guard.h"
 #include "io.h"
-#include "Board.h"
-
+#include "board.h"
 Guard::Guard(const Location& location)
 	: m_location(location), m_first_location(location)
+	
 {
 }
 
@@ -22,6 +22,11 @@ Location Guard::get_first_location()
 	return m_first_location;
 }
 
+bool Guard::getTouch()
+{
+	return m_touch;
+}
+
 void Guard::print(Location newLoc)
 {
 	Screen::setLocation(m_location);
@@ -33,22 +38,24 @@ void Guard::print(Location newLoc)
 
 void Guard::move(Board& board)
 {
+	
 	bool moved = false;
-	while (!moved) // ????? ?????? ????? ?? ?????? ????
+
+	while (!moved)
 	{
 		Location newLoc = chooseNewLocation(m_location);
 		if (!board.isWall(newLoc) && !board.isRock(newLoc) && board.isInLevel(newLoc))
 		{
 
-			moved = true; // ??? ??, ????? ????? ??
-			print(newLoc); // ????? ?????? ????		
+			moved = true;
+			print(newLoc);
 			if (board.isRobot(newLoc))
 			{
-				cout << "stop the game";
-				// stop the game
+				m_touch = true;
+				break;
 			}
 			board.setLocation(m_location, newLoc, '!');
-			m_location = newLoc; // ????? ????? ?????
+			m_location = newLoc; // update
 		}
 	}
 }
@@ -59,7 +66,7 @@ Location Guard::chooseNewLocation(Location loc)
 	Location newLoc = loc;
 
 	// random move.
-	int direction = rand() % 4; // 0 = ?????, 1 = ????, 2 = ?????, 3 = ?????
+	int direction = rand() % 4; // 0 = �����, 1 = ����, 2 = �����, 3 = �����
 	//direction = 0;
 	switch (direction)
 	{
@@ -80,4 +87,14 @@ Location Guard::chooseNewLocation(Location loc)
 		break;
 	}
 	return newLoc;
+}
+
+void Guard::goToFirstLoc()
+{
+	Screen::setLocation(m_location);
+	std::cout << ' ';
+	m_location = m_first_location;
+	Screen::setLocation(m_location);
+	std::cout << '!';
+	m_touch = false;
 }

@@ -12,11 +12,16 @@ public:
 	Location get_location();
 	void set_location(Location& location);
 	Location get_first_location();
+	bool getTouch();
 	void print(Location);
-	void move(Board&); // NOT CONST!!
+	void move(Board&);
 	Location chooseNewLocation(Location);
+	void goToFirstLoc();
+	
 
 private:
 	Location m_location;
 	Location m_first_location;
+	bool m_touch = false;
+	
 };

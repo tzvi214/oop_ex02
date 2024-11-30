@@ -3,7 +3,8 @@
 #include <iostream>
 
 Bomb::Bomb(const Location& location, int time)
-    : m_location(location), m_time(time)
+    : m_location{ location }, m_time{ time }
+    , m_killed_guard{false}, m_killed_robot{false}
 {}
 
 int Bomb::getTime() const 
@@ -44,11 +45,17 @@ void Bomb::handle_NowExploding(Board& board)
 
 }
 
-vector<Location> Bomb::handleExploded()
+vector<Location> Bomb::handleExploded(Board &board)
 {
     for (int i = 0; i < m_explodingLocation.size(); i++)
     {
-        print(m_explodingLocation.at(i),' ');
+        print(m_explodingLocation.at(i), ' ');
+        if (board.isRock(m_explodingLocation.at(i)))
+            board.setLocation(m_explodingLocation.at(i), m_explodingLocation.at(i), ' ');
+        if (board.isGuard(m_explodingLocation.at(i)))
+            m_killed_guard = true;
+        if (board.isRobot(m_explodingLocation.at(i)))
+            m_killed_robot = true;
     }
     return m_explodingLocation;
 }

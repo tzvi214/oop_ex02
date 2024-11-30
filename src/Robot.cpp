@@ -19,21 +19,12 @@ Location Robot::get_location()
 	return m_location;
 }
 
-Location Robot::get_first_location()
-{
-	return m_first_location;
-}
-
-void Robot::print(const Location& location)
+void Robot::print(const Location& location, char c)
 {
 	Screen::setLocation(location);
-	cout << '/';
+	cout << c;
 }
 
-bool Robot::check_if_legal_move( Board & board)
-{
-	return (board.isInLevel(m_location) );
-}
 
 void Robot::deleteOld_location(Location& location)
 {
@@ -94,11 +85,12 @@ void Robot::play(Board& board)
 					break;
 				}
 				
-
+				board.setLocation(m_location, newLocation, '/');
 				deleteOld_location(m_location);
 				setLocation(newLocation);
 				print(newLocation);
 				endTurn = true;
+				
 			}
 			else if(_getch() == (int)' ') // צריך שיאשר על ידי הקשה על רווח
 				endTurn = true;
@@ -121,5 +113,21 @@ bool Robot::dropBomb()
 bool Robot::touch()
 {
 	return m_touch;
+}
+
+void Robot::touchingBomb() const
+{
+	Screen::setLocation(m_location);
+	cout << '%';
+
+}
+
+void Robot::goToFirstLoc()
+{
+	Screen::setLocation(m_location);
+	cout << ' ';
+	m_location = m_first_location;
+	print(m_location);
+	m_touch = false;
 }
 
