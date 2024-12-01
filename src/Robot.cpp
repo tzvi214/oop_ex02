@@ -4,7 +4,7 @@
 #include <conio.h>
 Robot::Robot(Location& location)
 	:m_location {location}, m_first_location{location}, m_drop_bomb{false}
-	, m_touch{false}, m_life{5}
+	, m_touch{false}, m_life{5}, m_finshed{false}
 {
 }
 
@@ -84,7 +84,12 @@ void Robot::play(Board& board)
 					m_touch = true;
 					break;
 				}
-				
+				if (board.isDoor(newLocation))
+				{
+					m_finshed = true;
+					endTurn = true;
+					break;
+				}
 				board.setLocation(m_location, newLocation, '/');
 				deleteOld_location(m_location);
 				setLocation(newLocation);

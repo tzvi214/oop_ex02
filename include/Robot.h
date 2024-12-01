@@ -24,6 +24,7 @@ public:
 	int getLife() const { return m_life; }
 	void touchingBomb() const;
 	void initialization();
+	bool fishnetLevel() const { return m_finshed ; }
 	
 private:
 	Location m_location;
@@ -31,4 +32,5 @@ private:
 	bool m_drop_bomb;
 	bool m_touch;
 	int m_life;
+	bool m_finshed;
 };

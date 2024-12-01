@@ -25,6 +25,7 @@ void Manger::ran()
     board.print();
     Location robot_location = board.getRobotFirstLoc();
     Robot robot(robot_location);
+    board.printScoreAndLife(m_score, robot.getLife());
 
 
     for (int i = 0; i < board.getVecGuardFirstLoc().size(); i++)
@@ -46,6 +47,16 @@ void Manger::ran()
          restart(robot, board);
          continue;
      }
+     if (robot.fishnetLevel())
+     {
+         m_score += 25;
+         board.printScoreAndLife(m_score, robot.getLife());
+         Screen::resetLocation();
+         std::this_thread::sleep_for(5000ms);
+       // std::cout << "your finished the level";
+         break;
+     }
+
      bombs(board, robot);
  
     for (int i = 0; i < m_guardsMatrix.size(); i++)
@@ -79,6 +90,8 @@ void Manger::bombs(Board& board, Robot& robot)
                       board.setLocation(m_guardsMatrix.at(j).get_location(), m_guardsMatrix.at(j).get_location(),' ');
                       m_guardsMatrix.erase(m_guardsMatrix.begin() + j);
                       m_score += 3;
+                      board.printScoreAndLife(m_score, robot.getLife());
+                      j--;
                   }
               if (equal(robot.get_location(), indexOfExploded.at(k)))
                   restart(robot, board);
@@ -110,7 +123,7 @@ void Manger::restart(Robot& robot, Board& board)
     board.setLocation(robot.get_location(), robot.get_first_location(),'/');
     robot.initialization();
     board.printScoreAndLife(m_score, robot.getLife());
-
+  //  m_bombs_location.clear();
     for (int i = 0; i < m_guardsMatrix.size(); i++)
     {
         board.setLocation(m_guardsMatrix.at(i).get_location(), m_guardsMatrix.at(i).get_first_location(), '!');
