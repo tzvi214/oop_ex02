@@ -122,8 +122,9 @@ void Robot::touchingBomb() const
 
 }
 
-void Robot::goToFirstLoc()
+void Robot::initialization()
 {
+	m_life--;
 	Screen::setLocation(m_location);
 	cout << ' ';
 	m_location = m_first_location;

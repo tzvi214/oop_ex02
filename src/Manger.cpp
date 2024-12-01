@@ -34,7 +34,7 @@ void Manger::ran()
 
   
 
-  for (int i = 0; i < 55; i++)
+  for (int i = 0; i < 1000; i++)
   {
 
      robot.play(board);
@@ -42,40 +42,28 @@ void Manger::ran()
      if (robot.dropBomb())
        m_bombs_location.push_back(Bomb(robot.get_location()));
      if (robot.touch())
+     {
          restart(robot, board);
-     
+         continue;
+     }
      bombs(board, robot);
  
     for (int i = 0; i < m_guardsMatrix.size(); i++)
     {
         m_guardsMatrix[i].move(board);
+        if (m_guardsMatrix.at(i).getTouch())
+        {
+            restart(robot, board);
+            break;
+        }
         std::this_thread::sleep_for(50ms);
     }
 
   }
+
 }
 
-void Manger::restart(Robot& robot, Board &board)
-{
-    robot.goToFirstLoc();
-    board.setLocation(robot.get_location(), robot.get_location(), ' ');
-
-    for (int i = 0; i < m_guardsMatrix.size(); i++)
-    {
-        board.setLocation(m_guardsMatrix.at(i).get_location(), m_guardsMatrix.at(i).get_location(), ' ');
-        m_guardsMatrix.at(i).goToFirstLoc();
-        
-    }
-}
-
-
-bool Manger::equal(const Location& loc1, const Location& loc2)
-{
-    return (loc1.col == loc2.col && loc1.row == loc2.row);
-}
-
-
-
+//-----------------------------------------------
 void Manger::bombs(Board& board, Robot& robot)
 {
   for (int i = 0; i < m_bombs_location.size(); i++)
@@ -90,6 +78,7 @@ void Manger::bombs(Board& board, Robot& robot)
                   {
                       board.setLocation(m_guardsMatrix.at(j).get_location(), m_guardsMatrix.at(j).get_location(),' ');
                       m_guardsMatrix.erase(m_guardsMatrix.begin() + j);
+                      m_score += 3;
                   }
               if (equal(robot.get_location(), indexOfExploded.at(k)))
                   restart(robot, board);
@@ -113,4 +102,24 @@ void Manger::bombs(Board& board, Robot& robot)
 
       }
   }
+}
+//-----------------------------------------------
+void Manger::restart(Robot& robot, Board& board)
+{
+   
+    board.setLocation(robot.get_location(), robot.get_first_location(),'/');
+    robot.initialization();
+    board.printScoreAndLife(m_score, robot.getLife());
+
+    for (int i = 0; i < m_guardsMatrix.size(); i++)
+    {
+        board.setLocation(m_guardsMatrix.at(i).get_location(), m_guardsMatrix.at(i).get_first_location(), '!');
+        m_guardsMatrix.at(i).initialization();
+
+    }
+}
+//-----------------------------------------------
+bool Manger::equal(const Location& loc1, const Location& loc2)
+{
+    return (loc1.col == loc2.col && loc1.row == loc2.row);
 }

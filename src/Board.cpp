@@ -41,8 +41,8 @@ void Board::print() const
 {
     for (int i = 0; i < m_level.size(); i++)
         cout << m_level[i] << endl;
-    cout << "m_numRow" << m_numRow << endl;
-    cout << "m_numCol" << m_numCol << endl;
+   /* cout << "m_numRow" << m_numRow << endl;
+    cout << "m_numCol" << m_numCol << endl;*/
 
 }
 
@@ -61,6 +61,13 @@ vector<Location> Board::getVecGuardFirstLoc() const
 {
     return m_guardLoc;
 }
+
+void Board::printScoreAndLife(int score, int life) const
+{
+    Screen::setLocation(Location(m_numRow + 3, 0));
+    std::cout << "The score is:" << score << "  ,The life is:" << life;
+}
+
 
 void Board::setLocation(Location oldLoc, Location newLoc, char c)
 {

@@ -4,6 +4,7 @@
 #include <vector>
 #include "Location.h"
 #include <fstream>
+#include "io.h"
 using namespace std;
 
 class Board
@@ -22,6 +23,7 @@ public:
 	bool isInLevel(Location) const;
 	Location getRobotFirstLoc() const;
 	vector<Location> getVecGuardFirstLoc() const;
+	void printScoreAndLife(int score, int life)const;
 
 private:
 	string m_fileName;

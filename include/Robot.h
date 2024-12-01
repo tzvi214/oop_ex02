@@ -10,6 +10,7 @@ class Robot
 public:
 	Robot(Location &location);
 	Location get_location();
+	Location get_first_location() const {return m_first_location ; }
 	void print(const Location & location, char c = '/');
 	void deleteOld_location(Location& location);
 	void setLife(int life);
@@ -22,7 +23,7 @@ public:
 	bool touch();
 	int getLife() const { return m_life; }
 	void touchingBomb() const;
-	void goToFirstLoc();
+	void initialization();
 	
 private:
 	Location m_location;

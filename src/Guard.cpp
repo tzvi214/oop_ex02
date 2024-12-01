@@ -3,6 +3,7 @@
 #include "board.h"
 Guard::Guard(const Location& location)
 	: m_location(location), m_first_location(location)
+	, m_touch(false)
 	
 {
 }
@@ -44,7 +45,7 @@ void Guard::move(Board& board)
 	while (!moved)
 	{
 		Location newLoc = chooseNewLocation(m_location);
-		if (!board.isWall(newLoc) && !board.isRock(newLoc) && board.isInLevel(newLoc))
+		if (board.isInLevel(newLoc) && !board.isWall(newLoc) && !board.isRock(newLoc))
 		{
 
 			moved = true;
@@ -55,7 +56,7 @@ void Guard::move(Board& board)
 				break;
 			}
 			board.setLocation(m_location, newLoc, '!');
-			m_location = newLoc; // update
+			set_location(newLoc); // update
 		}
 	}
 }
@@ -89,11 +90,11 @@ Location Guard::chooseNewLocation(Location loc)
 	return newLoc;
 }
 
-void Guard::goToFirstLoc()
+void Guard::initialization()
 {
 	Screen::setLocation(m_location);
 	std::cout << ' ';
-	m_location = m_first_location;
+	set_location(m_first_location);
 	Screen::setLocation(m_location);
 	std::cout << '!';
 	m_touch = false;
