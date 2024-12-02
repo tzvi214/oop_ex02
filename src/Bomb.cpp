@@ -37,11 +37,14 @@ void Bomb::print(Location& location, char c)
 
 void Bomb::handle_NowExploding(Board& board)
 {
+    m_warningRobot = false;
     m_time--;
     set_explodingLocation(board);
     for (int i = 0; i < m_explodingLocation.size(); i++)
     {
         print(m_explodingLocation.at(i), '*');
+        if (board.isRobot(m_explodingLocation.at(i)))
+            m_warningRobot = true;
     }
 
 }
@@ -51,13 +54,7 @@ vector<Location> Bomb::handleExploded(Board &board)
     for (int i = 0; i < m_explodingLocation.size(); i++)
     {
         print(m_explodingLocation.at(i), ' ');
-
-        //if (board.isRock(m_explodingLocation.at(i)))
-        //    board.setLocation(m_explodingLocation.at(i), m_explodingLocation.at(i), ' ');
-        //if (board.isGuard(m_explodingLocation.at(i)))
-        //   // m_killed_guard = true;
-        //if (board.isRobot(m_explodingLocation.at(i)))
-        //    m_killed_robot = true;
+        board.setLocation(m_explodingLocation.at(i), m_explodingLocation.at(i), ' ');
     }
     return m_explodingLocation;
 }
@@ -65,7 +62,6 @@ vector<Location> Bomb::handleExploded(Board &board)
 
 void Bomb::set_explodingLocation(Board& board)
 {
-    m_warningRobot = false;
    m_explodingLocation.push_back(m_location);
    Location up = Location{m_location.row-1,m_location.col};
    Location down = Location{ m_location.row +1,m_location.col };
@@ -73,24 +69,16 @@ void Bomb::set_explodingLocation(Board& board)
    Location left = Location{ m_location.row ,m_location.col-1 };
     
    if (board.isInLevel(up) && !board.isWall(up) && !board.isExitDoor(up))
-   {
        m_explodingLocation.push_back(up);
-          if (board.isRobot(up)) m_warningRobot = true;
-   }
+       
    if (board.isInLevel(down) && !board.isWall(down) && !board.isExitDoor(down))
-   {
        m_explodingLocation.push_back(down);
-         if (board.isRobot(down)) m_warningRobot = true;
-   }
+       
    if (board.isInLevel(right) && !board.isWall(right) && !board.isExitDoor(right))
-     {
         m_explodingLocation.push_back(right);
-         if (board.isRobot(right)) m_warningRobot = true;
-      }
+      
    if (board.isInLevel(left) && !board.isWall(left) && !board.isExitDoor(left))
-   {
        m_explodingLocation.push_back(left);
-         if (board.isRobot(left)) m_warningRobot = true;
-    }
+       
 }
 
