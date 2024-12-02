@@ -24,7 +24,8 @@ public:
 	Location getRobotFirstLoc() const;
 	vector<Location> getVecGuardFirstLoc() const;
 	void printScoreAndLife(int score, int life)const;
-
+	Location get_exitDoorLoc()const { return m_exitDoor; }
+	bool getIsFileOpen() const { return m_openFile ; }
 private:
 	string m_fileName;
 	vector<string> m_level;
@@ -32,7 +33,7 @@ private:
 	Location m_robotLoc;
 	int m_numRow;
 	int m_numCol;
-
+	Location m_exitDoor;
 	void updateLevel(const string);
-
+	bool m_openFile;
 };

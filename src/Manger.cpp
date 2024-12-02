@@ -20,12 +20,39 @@ using namespace std::chrono_literals;
 
 void Manger::ran()
 {
-    Board board("level01.txt");
+    int counter = 1;
+    while (true) // A loop that opens all files.
+    {
+        string fileName = std::string("level") + (counter < 10 ? "0" : "") + std::to_string(counter) + ".txt";
 
-    board.print();
+        Board board(fileName);
+        if (!board.getIsFileOpen())
+        {
+            system("cls");
+            std::cout << "No more levels to load. Exiting..." << std::endl;
+            std::cin.get(); 
+            return; // Exit the loop if the file couldn't be opened
+           
+
+        }
+
+        system("cls");
+
+        board.print();
+        ranFile(board);
+      
+        counter++; // add the counter.
+    }
+
+
+}
+//-----------------------------------------------
+void Manger::ranFile(Board& board)
+{
+   
     Location robot_location = board.getRobotFirstLoc();
     Robot robot(robot_location);
-    board.printScoreAndLife(m_score, robot.getLife());
+    board.printScoreAndLife(m_score,m_life);
 
 
     for (int i = 0; i < board.getVecGuardFirstLoc().size(); i++)
@@ -35,9 +62,8 @@ void Manger::ran()
 
   
 
-  for (int i = 0; i < 1000; i++)
-  {
-
+ while(!robot.fishnetLevel())
+  {    
      robot.play(board);
       
      if (robot.dropBomb())
@@ -50,11 +76,13 @@ void Manger::ran()
      if (robot.fishnetLevel())
      {
          m_score += 25;
-         board.printScoreAndLife(m_score, robot.getLife());
+         board.printScoreAndLife(m_score, m_life);
          Screen::resetLocation();
-         std::this_thread::sleep_for(5000ms);
-       // std::cout << "your finished the level";
-         break;
+         system("cls");
+        std::cout << "Congratulations, you have completed the step," << std::endl 
+                  << "press enter to move to the next step.";
+         std::cin.get();
+         break;// return;
      }
 
      bombs(board, robot);
@@ -90,7 +118,7 @@ void Manger::bombs(Board& board, Robot& robot)
                       board.setLocation(m_guardsMatrix.at(j).get_location(), m_guardsMatrix.at(j).get_location(),' ');
                       m_guardsMatrix.erase(m_guardsMatrix.begin() + j);
                       m_score += 3;
-                      board.printScoreAndLife(m_score, robot.getLife());
+                      board.printScoreAndLife(m_score, m_life);
                       j--;
                   }
               if (equal(robot.get_location(), indexOfExploded.at(k)))
@@ -103,7 +131,7 @@ void Manger::bombs(Board& board, Robot& robot)
       else if (m_bombs_location.at(i).isExploding())
       {
           m_bombs_location.at(i).handle_NowExploding(board);
-          if (equal(m_bombs_location.at(i).getLocation(), robot.get_location()))
+          if (m_bombs_location.at(i).warningRobot())
               robot.touchingBomb();
 
       }
@@ -119,10 +147,10 @@ void Manger::bombs(Board& board, Robot& robot)
 //-----------------------------------------------
 void Manger::restart(Robot& robot, Board& board)
 {
-   
+    m_life--;
     board.setLocation(robot.get_location(), robot.get_first_location(),'/');
     robot.initialization();
-    board.printScoreAndLife(m_score, robot.getLife());
+    board.printScoreAndLife(m_score, m_life);
   //  m_bombs_location.clear();
     for (int i = 0; i < m_guardsMatrix.size(); i++)
     {

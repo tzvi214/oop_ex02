@@ -4,7 +4,7 @@
 #include <conio.h>
 Robot::Robot(Location& location)
 	:m_location {location}, m_first_location{location}, m_drop_bomb{false}
-	, m_touch{false}, m_life{5}, m_finshed{false}
+	, m_touch{false}, m_finshed{false}
 {
 }
 
@@ -31,10 +31,7 @@ void Robot::deleteOld_location(Location& location)
 	Screen::setLocation(location);
 	cout << ' ';
 }
-void Robot::setLife(int life)
-{
-	m_life = life;
-}
+
 void Robot::move(Location& location)
 {
 	m_location = location;
@@ -129,7 +126,6 @@ void Robot::touchingBomb() const
 
 void Robot::initialization()
 {
-	m_life--;
 	Screen::setLocation(m_location);
 	cout << ' ';
 	m_location = m_first_location;

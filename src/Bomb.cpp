@@ -5,6 +5,7 @@
 Bomb::Bomb(const Location& location, int time)
     : m_location{ location }, m_time{ time }
     , m_killed_guard{false}, m_killed_robot{false}
+    ,m_warningRobot{false}
 {}
 
 int Bomb::getTime() const 
@@ -53,7 +54,7 @@ vector<Location> Bomb::handleExploded(Board &board)
         if (board.isRock(m_explodingLocation.at(i)))
             board.setLocation(m_explodingLocation.at(i), m_explodingLocation.at(i), ' ');
         if (board.isGuard(m_explodingLocation.at(i)))
-            m_killed_guard = true;
+           // m_killed_guard = true;
         if (board.isRobot(m_explodingLocation.at(i)))
             m_killed_robot = true;
     }
@@ -61,8 +62,9 @@ vector<Location> Bomb::handleExploded(Board &board)
 }
 
 
-void Bomb::set_explodingLocation( Board& board)
+void Bomb::set_explodingLocation(Board& board)
 {
+    m_warningRobot = false;
    m_explodingLocation.push_back(m_location);
    Location up = Location{m_location.row-1,m_location.col};
    Location down = Location{ m_location.row +1,m_location.col };
@@ -71,15 +73,23 @@ void Bomb::set_explodingLocation( Board& board)
     
    if (board.isInLevel(up) && !board.isWall(up))
         m_explodingLocation.push_back(up);
-    
+   {
+       if (board.isRobot(up)) m_warningRobot = true;
+   }
    if (board.isInLevel(down) && !board.isWall(down))
         m_explodingLocation.push_back(down);
-    
+   {
+       if (board.isRobot(down)) m_warningRobot = true;
+   }
    if (board.isInLevel(right) && !board.isWall(right))
         m_explodingLocation.push_back(right);
-    
+   {
+       if (board.isRobot(down)) m_warningRobot = true;
+   }
    if (board.isInLevel(left) && !board.isWall(left))
         m_explodingLocation.push_back(left);
-
+   {
+       if (board.isRobot(left)) m_warningRobot = true;
+   }
 }
 

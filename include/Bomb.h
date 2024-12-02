@@ -20,13 +20,13 @@ public:
     bool killedRobot() const { return m_killed_robot; }
     Location getLocation() { return m_location; }
     vector <Location> handleExploded(Board& board);
-
+    bool warningRobot() const {return m_warningRobot; }
 private:
     Location m_location;   
     vector <Location> m_explodingLocation;
     int m_time;     
     bool m_killed_guard;
     bool m_killed_robot;
-
+    bool m_warningRobot;
     
 };
