@@ -20,7 +20,7 @@ public:
 	bool touch() const {return m_touch; }
 	bool dropBomb();
 	bool touch();
-	void touchingBomb() const;
+	void warningPrint() const;
 	void initialization();
 	bool fishnetLevel() const { return m_finshed ; }
 	

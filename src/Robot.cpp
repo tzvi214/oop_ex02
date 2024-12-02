@@ -53,7 +53,7 @@ void Robot::play(Board& board)
 		newRow = m_location.row;
 		newCol = m_location.col;
 
-		if (move == Keys::B)
+		if (move == Keys::b)
 		 {
 			set_dropBomb(true);
 			endTurn = true;
@@ -94,7 +94,7 @@ void Robot::play(Board& board)
 				endTurn = true;
 				
 			}
-			else if(_getch() == (int)' ') // צריך שיאשר על ידי הקשה על רווח
+			else if(_getch() == Keys::SPACE) // צריך שיאשר על ידי הקשה על רווח
 				endTurn = true;
 		
 		}
@@ -117,7 +117,7 @@ bool Robot::touch()
 	return m_touch;
 }
 
-void Robot::touchingBomb() const
+void Robot::warningPrint() const
 {
 	Screen::setLocation(m_location);
 	cout << '%';

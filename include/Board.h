@@ -25,6 +25,7 @@ public:
 	vector<Location> getVecGuardFirstLoc() const;
 	void printScoreAndLife(int score, int life)const;
 	Location get_exitDoorLoc()const { return m_exitDoor; }
+	bool isExitDoor(Location &loc) const;
 	bool getIsFileOpen() const { return m_openFile ; }
 private:
 	string m_fileName;

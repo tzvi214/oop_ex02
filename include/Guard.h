@@ -14,15 +14,13 @@ public:
 	Location get_first_location();
 	bool getTouch();
 	void print(Location);
-	void move(Board&);
+	void move(Board&, const Location&);
 	void initialization();
-	
 
 private:
 	Location m_location;
 	Location m_first_location;
-	bool m_touch = false;
-	Location chooseNewLocation(Location);
+	bool m_touch;
+	void chooseNewLoc(Board&, const Location&, int&, Location&);
 
-	
 };

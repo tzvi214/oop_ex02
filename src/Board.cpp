@@ -68,11 +68,25 @@ void Board::printScoreAndLife(int score, int life) const
     std::cout << "The score is:" << score << "  ,The life is:" << life;
 }
 
+bool Board::isExitDoor(Location& loc) const
+{
+    return (loc.col == m_exitDoor.col && loc.row == m_exitDoor.row);
+}
+
 void Board::setLocation(Location oldLoc, Location newLoc, char c)
 {
+    if (newLoc.col == m_exitDoor.col && newLoc.row == m_exitDoor.row)
+        c = 'D';
+    else if (oldLoc.col == m_exitDoor.col && oldLoc.row == m_exitDoor.row)
+    {
+        m_level[oldLoc.row][oldLoc.col] = 'D';
+        m_level[newLoc.row][newLoc.col] = c;
+        return;
+    }
+
     m_level[oldLoc.row][oldLoc.col] = ' ';
     m_level[newLoc.row][newLoc.col] = c;
-}
+  }
 
 bool Board::isWall(Location loc) const
 {

@@ -33,7 +33,6 @@ void Manger::ran()
             std::cin.get(); 
             return; // Exit the loop if the file couldn't be opened
            
-
         }
 
         system("cls");
@@ -89,7 +88,7 @@ void Manger::ranFile(Board& board)
  
     for (int i = 0; i < m_guardsMatrix.size(); i++)
     {
-        m_guardsMatrix[i].move(board);
+        m_guardsMatrix[i].move(board, robot.get_location());
         if (m_guardsMatrix.at(i).getTouch())
         {
             restart(robot, board);
@@ -105,6 +104,7 @@ void Manger::ranFile(Board& board)
 //-----------------------------------------------
 void Manger::bombs(Board& board, Robot& robot)
 {
+    bool needToRestart = false;
   for (int i = 0; i < m_bombs_location.size(); i++)
   {
       if (m_bombs_location.at(i).isExploded())
@@ -122,7 +122,7 @@ void Manger::bombs(Board& board, Robot& robot)
                       j--;
                   }
               if (equal(robot.get_location(), indexOfExploded.at(k)))
-                  restart(robot, board);
+                  needToRestart = true;// לפניהאתחול לבדוק אם שומר נפסל  שם
           }
 
           m_bombs_location.erase(m_bombs_location.begin());
@@ -132,17 +132,20 @@ void Manger::bombs(Board& board, Robot& robot)
       {
           m_bombs_location.at(i).handle_NowExploding(board);
           if (m_bombs_location.at(i).warningRobot())
-              robot.touchingBomb();
+              robot.warningPrint();
 
       }
       else
       {
           m_bombs_location.at(i).renewTime();
           if (equal(m_bombs_location.at(i).getLocation(), robot.get_location()))
-              robot.touchingBomb();
+              robot.warningPrint();
 
       }
   }
+  if(needToRestart)
+      restart(robot, board);
+
 }
 //-----------------------------------------------
 void Manger::restart(Robot& robot, Board& board)

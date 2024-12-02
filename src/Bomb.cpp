@@ -71,25 +71,25 @@ void Bomb::set_explodingLocation(Board& board)
    Location right = Location{ m_location.row ,m_location.col+1 };
    Location left = Location{ m_location.row ,m_location.col-1 };
     
-   if (board.isInLevel(up) && !board.isWall(up))
-        m_explodingLocation.push_back(up);
+   if (board.isInLevel(up) && !board.isWall(up) && !board.isExitDoor(up))
    {
-       if (board.isRobot(up)) m_warningRobot = true;
+       m_explodingLocation.push_back(up);
+          if (board.isRobot(up)) m_warningRobot = true;
    }
-   if (board.isInLevel(down) && !board.isWall(down))
-        m_explodingLocation.push_back(down);
+   if (board.isInLevel(down) && !board.isWall(down) && !board.isExitDoor(down))
    {
-       if (board.isRobot(down)) m_warningRobot = true;
+       m_explodingLocation.push_back(down);
+         if (board.isRobot(down)) m_warningRobot = true;
    }
-   if (board.isInLevel(right) && !board.isWall(right))
+   if (board.isInLevel(right) && !board.isWall(right) && !board.isExitDoor(right))
+     {
         m_explodingLocation.push_back(right);
+         if (board.isRobot(right)) m_warningRobot = true;
+      }
+   if (board.isInLevel(left) && !board.isWall(left) && !board.isExitDoor(left))
    {
-       if (board.isRobot(down)) m_warningRobot = true;
-   }
-   if (board.isInLevel(left) && !board.isWall(left))
-        m_explodingLocation.push_back(left);
-   {
-       if (board.isRobot(left)) m_warningRobot = true;
-   }
+       m_explodingLocation.push_back(left);
+         if (board.isRobot(left)) m_warningRobot = true;
+    }
 }
 
