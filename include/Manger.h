@@ -18,7 +18,7 @@ public:
 
   private:
      std:: vector <Guard> m_guardsMatrix;
-     std::vector <Bomb> m_bombs_location;
+     std::vector <Bomb> m_bombsMatrix;
      int m_score = 0;
      int m_life = 5;
 };

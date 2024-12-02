@@ -92,7 +92,8 @@ void Guard::chooseNewLoc(Board& board, const Location& robotLocation, int& bestD
 		}
 
 		// Check if the potential location is valid
-		if (board.isInLevel(potentialLoc) && !board.isWall(potentialLoc) && !board.isRock(potentialLoc) )
+		if (board.isInLevel(potentialLoc) && !board.isWall(potentialLoc) && !board.isRock(potentialLoc) 
+			                                              && !board.isExitDoor(potentialLoc))
 		{
 			int distance = abs(potentialLoc.row - robotLocation.row) + abs(potentialLoc.col - robotLocation.col);
 			if (distance < bestDistance)

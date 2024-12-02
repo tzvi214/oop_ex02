@@ -51,6 +51,7 @@ vector<Location> Bomb::handleExploded(Board &board)
     for (int i = 0; i < m_explodingLocation.size(); i++)
     {
         print(m_explodingLocation.at(i), ' ');
+
         if (board.isRock(m_explodingLocation.at(i)))
             board.setLocation(m_explodingLocation.at(i), m_explodingLocation.at(i), ' ');
         if (board.isGuard(m_explodingLocation.at(i)))

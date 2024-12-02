@@ -48,7 +48,8 @@ void Manger::ran()
 //-----------------------------------------------
 void Manger::ranFile(Board& board)
 {
-   
+    m_guardsMatrix.clear();
+    m_bombsMatrix.clear();
     Location robot_location = board.getRobotFirstLoc();
     Robot robot(robot_location);
     board.printScoreAndLife(m_score,m_life);
@@ -66,7 +67,7 @@ void Manger::ranFile(Board& board)
      robot.play(board);
       
      if (robot.dropBomb())
-       m_bombs_location.push_back(Bomb(robot.get_location()));
+       m_bombsMatrix.push_back(Bomb(robot.get_location()));
      if (robot.touch())
      {
          restart(robot, board);
@@ -105,11 +106,11 @@ void Manger::ranFile(Board& board)
 void Manger::bombs(Board& board, Robot& robot)
 {
     bool needToRestart = false;
-  for (int i = 0; i < m_bombs_location.size(); i++)
+  for (int i = 0; i < m_bombsMatrix.size(); i++)
   {
-      if (m_bombs_location.at(i).isExploded())
+      if (m_bombsMatrix.at(i).isExploded())
       {
-          vector <Location> indexOfExploded = m_bombs_location.at(i).handleExploded(board);
+          vector <Location> indexOfExploded = m_bombsMatrix.at(i).handleExploded(board);
           for (int k = 0; k < indexOfExploded.size(); k++)
           {
               for (int j = 0; j < m_guardsMatrix.size(); j++)
@@ -125,20 +126,20 @@ void Manger::bombs(Board& board, Robot& robot)
                   needToRestart = true;// לפניהאתחול לבדוק אם שומר נפסל  שם
           }
 
-          m_bombs_location.erase(m_bombs_location.begin());
+          m_bombsMatrix.erase(m_bombsMatrix.begin());
           i--;
        }
-      else if (m_bombs_location.at(i).isExploding())
+      else if (m_bombsMatrix.at(i).isExploding())
       {
-          m_bombs_location.at(i).handle_NowExploding(board);
-          if (m_bombs_location.at(i).warningRobot())
+          m_bombsMatrix.at(i).handle_NowExploding(board);
+          if (m_bombsMatrix.at(i).warningRobot())
               robot.warningPrint();
 
       }
       else
       {
-          m_bombs_location.at(i).renewTime();
-          if (equal(m_bombs_location.at(i).getLocation(), robot.get_location()))
+          m_bombsMatrix.at(i).renewTime();
+          if (equal(m_bombsMatrix.at(i).getLocation(), robot.get_location()))
               robot.warningPrint();
 
       }
@@ -154,13 +155,19 @@ void Manger::restart(Robot& robot, Board& board)
     board.setLocation(robot.get_location(), robot.get_first_location(),'/');
     robot.initialization();
     board.printScoreAndLife(m_score, m_life);
-  //  m_bombs_location.clear();
+
     for (int i = 0; i < m_guardsMatrix.size(); i++)
     {
         board.setLocation(m_guardsMatrix.at(i).get_location(), m_guardsMatrix.at(i).get_first_location(), '!');
         m_guardsMatrix.at(i).initialization();
 
     }
+
+
+
+
+    m_bombsMatrix.clear();
+
 }
 //-----------------------------------------------
 bool Manger::equal(const Location& loc1, const Location& loc2)

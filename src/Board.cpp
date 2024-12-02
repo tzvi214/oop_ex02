@@ -75,15 +75,7 @@ bool Board::isExitDoor(Location& loc) const
 
 void Board::setLocation(Location oldLoc, Location newLoc, char c)
 {
-    if (newLoc.col == m_exitDoor.col && newLoc.row == m_exitDoor.row)
-        c = 'D';
-    else if (oldLoc.col == m_exitDoor.col && oldLoc.row == m_exitDoor.row)
-    {
-        m_level[oldLoc.row][oldLoc.col] = 'D';
-        m_level[newLoc.row][newLoc.col] = c;
-        return;
-    }
-
+   
     m_level[oldLoc.row][oldLoc.col] = ' ';
     m_level[newLoc.row][newLoc.col] = c;
   }
