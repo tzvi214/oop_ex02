@@ -9,17 +9,14 @@ class Robot
 {
 public:
 	Robot(Location &location);
+
+	Location get_first_location() const { return m_first_location; }
 	Location get_location();
-	Location get_first_location() const {return m_first_location ; }
-	void print(const Location & location, char c = '/');
-	void deleteOld_location(Location& location);
-	void move(Location& location);
-	void play(Board& board);
-	void setLocation(Location location);
-	bool touch() const {return m_touch; }
-	bool dropBomb();
 	void warningPrint() const;
 	void initialization();
+	void play(Board& board);
+	bool touch() const {return m_touch; }
+	bool dropBomb();
 	bool fishnetLevel() const { return m_finshed ; }
 	
 private:
@@ -29,5 +26,10 @@ private:
 	bool m_touch;
 	bool m_finshed;
 	void set_dropBomb(bool flag);
+	void setLocation(Location &location);
+	void move(Location& location);
+	void deleteOld_location(Location& location);
+	void print(const Location& location, char c = '/');
+
 
 };

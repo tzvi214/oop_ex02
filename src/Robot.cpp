@@ -9,7 +9,7 @@ Robot::Robot(Location& location)
 }
 
 
-void Robot::setLocation(Location location)
+void Robot::setLocation(Location &location)
 {
 	m_location = location;
 }
@@ -97,9 +97,9 @@ void Robot::play(Board& board)
 			else if(_getch() == Keys::SPACE) // צריך שיאשר על ידי הקשה על רווח
 				endTurn = true;
 		
-		}
-		
+		}	
 	}
+
 }
 
 void Robot::set_dropBomb(bool flag)
