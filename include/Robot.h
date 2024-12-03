@@ -11,7 +11,7 @@ public:
 	Robot(Location &location);
 
 	Location get_first_location() const { return m_first_location; }
-	Location get_location();
+	Location get_location() const { return m_location; }
 	void warningPrint() const;
 	void initialization();
 	void play(Board& board);
@@ -29,7 +29,7 @@ private:
 	void setLocation(Location &location);
 	void move(Location& location);
 	void deleteOld_location(Location& location);
-	void print(const Location& location, char c = '/');
+	void print(const Location& location, char c = '/') const;
 
 
 };

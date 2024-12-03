@@ -14,12 +14,7 @@ void Robot::setLocation(Location &location)
 	m_location = location;
 }
 
-Location Robot::get_location()
-{
-	return m_location;
-}
-
-void Robot::print(const Location& location, char c)
+void Robot::print(const Location& location, char c) const
 {
 	Screen::setLocation(location);
 	cout << c;

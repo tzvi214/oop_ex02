@@ -11,7 +11,6 @@ class Board
 {
 public:
 	Board(const string&);
-	int getRows();
 	void print() const;
 	void setLocation(Location oldLoc, Location newLoc, char);
 	bool isSpace(Location) const;
@@ -38,4 +37,6 @@ private:
 	Location m_exitDoor;
 	void updateLevel(const string);
 	bool m_openFile;
+	int getRows();
+
 };

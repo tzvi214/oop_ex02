@@ -2,12 +2,9 @@
 #include "io.h"
 #include "Location.h"
 #include <conio.h>
-#include"Rock.h"
 #include"ExitDoor.h"
 #include"Bomb.h"
-#include"Wall.h"
 #include"Guard.h"
-#include"Space.h"
 #include <iostream>
 #include <vector>
 #include "Manger.h"
@@ -82,7 +79,7 @@ void Manger::ranFile(Board& board)
          Screen::resetLocation();
          system("cls");
         std::cout << "Congratulations, you have completed the step," << std::endl 
-                  << "press enter to move to the next step.";
+                  << "press Enter to move to the next step.";
          std::cin.get();
          break;// return;
      }
@@ -123,10 +120,6 @@ void Manger::bombs(Board& board, Robot& robot)
       {
           vector <Location> indexOfExploding = m_bombsMatrix.at(i).handle_NowExploding(board);
           needToRestart = eraseExplodedRobotAndGuards(robot, board, indexOfExploding);
-         /* if (m_bombsMatrix.at(i).warningRobot())
-              robot.warningPrint();*/
-          //eraseExplodedRobotAndGuards(robot, board, m_bombsMatrix.at(i).handle_NowExploding(board));
-
       }
       else
       {
@@ -168,6 +161,7 @@ void Manger::restart(Robot& robot, Board& board)
     if (m_life <= 0)
     {
         system("cls");
+        std::cout << "You failed successfully next time.";
         std::cin.get();
         exit(0);
     }
