@@ -7,13 +7,13 @@ Bomb::Bomb(const Location& location, int time)
     ,m_warningRobot{false}
 {}
 
-Bomb::~Bomb()
+ void Bomb::deleteData(Board& board)
 {
     Screen::setLocation(m_location);
     std::cout << ' ';
     if (m_time <= 1)
     {
-        deletePrinting();
+        deletePrinting(board);
     }
 }
 
@@ -61,16 +61,16 @@ vector <Location> Bomb::handle_NowExploding(Board& board)
 //-------------------------------------
 vector<Location> Bomb::handleExploded(Board &board)
 {
-    deletePrinting();
+    deletePrinting(board);
     return m_explodingLocation;
 }
 //-------------------------------------
-void Bomb::deletePrinting()
+void Bomb::deletePrinting(Board& board)
 {
 for (int i = 0; i < m_explodingLocation.size(); i++)
     {
         print(m_explodingLocation.at(i), ' ');
-      //  board.setLocation(m_explodingLocation.at(i), m_explodingLocation.at(i), ' ');
+        board.setLocation(m_explodingLocation.at(i), m_explodingLocation.at(i), ' '); //to delete rock
     }
 
 }

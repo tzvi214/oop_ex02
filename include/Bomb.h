@@ -8,7 +8,7 @@ class Bomb
 {
 public:
     Bomb(const Location& location, int time =5);
-    ~Bomb();
+    void deleteData(Board& board);
     int getTime() const;             
     bool isExploding() const;  
     bool isExploded() const;
@@ -17,7 +17,7 @@ public:
     vector <Location> handle_NowExploding(Board& board);
     void set_explodingLocation(Board& board);
 
-    Location getLocation() { return m_location; }
+    Location getLocation() const { return m_location; }
     vector <Location> handleExploded(Board& board);
     
     bool warningRobot() const {return m_warningRobot; }
@@ -26,5 +26,5 @@ private:
     vector <Location> m_explodingLocation;
     int m_time;     
     bool m_warningRobot;
-    void deletePrinting();
+    void deletePrinting(Board& board);
 };

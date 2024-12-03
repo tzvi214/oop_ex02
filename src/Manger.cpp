@@ -183,6 +183,8 @@ void Manger::restart(Robot& robot, Board& board)
     }
 
 
+    for (int i = 0; i < m_bombsMatrix.size(); i++)
+        m_bombsMatrix.at(i).deleteData(board);
 
 
     m_bombsMatrix.clear();
