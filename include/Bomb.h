@@ -8,22 +8,23 @@ class Bomb
 {
 public:
     Bomb(const Location& location, int time =5);
-
+    ~Bomb();
     int getTime() const;             
     bool isExploding() const;  
     bool isExploded() const;
     void renewTime();
     void print(Location &location, char c);
-    void handle_NowExploding(Board& board);
+    vector <Location> handle_NowExploding(Board& board);
     void set_explodingLocation(Board& board);
 
     Location getLocation() { return m_location; }
     vector <Location> handleExploded(Board& board);
+    
     bool warningRobot() const {return m_warningRobot; }
 private:
     Location m_location;   
     vector <Location> m_explodingLocation;
     int m_time;     
     bool m_warningRobot;
-    
+    void deletePrinting();
 };

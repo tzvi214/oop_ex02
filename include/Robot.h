@@ -14,12 +14,10 @@ public:
 	void print(const Location & location, char c = '/');
 	void deleteOld_location(Location& location);
 	void move(Location& location);
-	void play(Board& board);// הוא לא צריך manger
-	void set_dropBomb( bool flag);
+	void play(Board& board);
 	void setLocation(Location location);
 	bool touch() const {return m_touch; }
 	bool dropBomb();
-	bool touch();
 	void warningPrint() const;
 	void initialization();
 	bool fishnetLevel() const { return m_finshed ; }
@@ -30,4 +28,6 @@ private:
 	bool m_drop_bomb;
 	bool m_touch;
 	bool m_finshed;
+	void set_dropBomb(bool flag);
+
 };

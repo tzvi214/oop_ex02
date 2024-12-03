@@ -68,6 +68,11 @@ void Board::printScoreAndLife(int score, int life) const
     std::cout << "The score is:" << score << "  ,The life is:" << life;
 }
 
+void Board::printLevel(int num_level) const
+{
+    Screen::setLocation(Location(m_numRow + 4, 0));
+    std::cout << "The level is:" << num_level;
+}
 bool Board::isExitDoor(Location& loc) const
 {
     return (loc.col == m_exitDoor.col && loc.row == m_exitDoor.row);

@@ -4,9 +4,18 @@
 
 Bomb::Bomb(const Location& location, int time)
     : m_location{ location }, m_time{ time }
-   // , m_killed_guard{false}, m_killed_robot{false}
     ,m_warningRobot{false}
 {}
+
+Bomb::~Bomb()
+{
+    Screen::setLocation(m_location);
+    std::cout << ' ';
+    if (m_time <= 1)
+    {
+        deletePrinting();
+    }
+}
 
 int Bomb::getTime() const 
 {
@@ -15,12 +24,12 @@ int Bomb::getTime() const
 
 bool Bomb::isExploding() const 
 {
-   return (m_time == 0);
+   return (m_time == 1);
 }
 
 bool Bomb::isExploded() const
 {
-    return (m_time < 0);
+    return (m_time < 1);
 }
 
 void Bomb::renewTime()
@@ -35,7 +44,7 @@ void Bomb::print(Location& location, char c)
     std::cout << c;
 }
 
-void Bomb::handle_NowExploding(Board& board)
+vector <Location> Bomb::handle_NowExploding(Board& board)
 {
     m_warningRobot = false;
     m_time--;
@@ -46,17 +55,24 @@ void Bomb::handle_NowExploding(Board& board)
         if (board.isRobot(m_explodingLocation.at(i)))
             m_warningRobot = true;
     }
+    return m_explodingLocation;
 
 }
-
+//-------------------------------------
 vector<Location> Bomb::handleExploded(Board &board)
 {
-    for (int i = 0; i < m_explodingLocation.size(); i++)
+    deletePrinting();
+    return m_explodingLocation;
+}
+//-------------------------------------
+void Bomb::deletePrinting()
+{
+for (int i = 0; i < m_explodingLocation.size(); i++)
     {
         print(m_explodingLocation.at(i), ' ');
-        board.setLocation(m_explodingLocation.at(i), m_explodingLocation.at(i), ' ');
+      //  board.setLocation(m_explodingLocation.at(i), m_explodingLocation.at(i), ' ');
     }
-    return m_explodingLocation;
+
 }
 
 

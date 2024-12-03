@@ -112,11 +112,6 @@ bool Robot::dropBomb()
 	return m_drop_bomb;
 }
 
-bool Robot::touch()
-{
-	return m_touch;
-}
-
 void Robot::warningPrint() const
 {
 	Screen::setLocation(m_location);

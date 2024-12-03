@@ -38,8 +38,10 @@ void Manger::ran()
         system("cls");
 
         board.print();
+        board.printLevel(counter);
+        board.printScoreAndLife(m_score, m_life);
         ranFile(board);
-      
+       
         counter++; // add the counter.
     }
 
@@ -52,7 +54,6 @@ void Manger::ranFile(Board& board)
     m_bombsMatrix.clear();
     Location robot_location = board.getRobotFirstLoc();
     Robot robot(robot_location);
-    board.printScoreAndLife(m_score,m_life);
 
 
     for (int i = 0; i < board.getVecGuardFirstLoc().size(); i++)
@@ -60,7 +61,7 @@ void Manger::ranFile(Board& board)
         m_guardsMatrix.push_back(board.getVecGuardFirstLoc().at(i));
     }
 
-  
+    int addPoints = m_guardsMatrix.size() * 3;
 
  while(!robot.fishnetLevel())
   {    
@@ -75,6 +76,7 @@ void Manger::ranFile(Board& board)
      }
      if (robot.fishnetLevel())
      {
+         m_score += addPoints;
          m_score += 25;
          board.printScoreAndLife(m_score, m_life);
          Screen::resetLocation();
@@ -85,18 +87,19 @@ void Manger::ranFile(Board& board)
          break;// return;
      }
 
+     for (int i = 0; i < m_guardsMatrix.size(); i++)
+     {
+         m_guardsMatrix[i].move(board, robot.get_location());
+         if (m_guardsMatrix.at(i).getTouch())
+         {
+             restart(robot, board);
+             break;
+         }
+         std::this_thread::sleep_for(50ms);
+     }
+
      bombs(board, robot);
  
-    for (int i = 0; i < m_guardsMatrix.size(); i++)
-    {
-        m_guardsMatrix[i].move(board, robot.get_location());
-        if (m_guardsMatrix.at(i).getTouch())
-        {
-            restart(robot, board);
-            break;
-        }
-        std::this_thread::sleep_for(50ms);
-    }
 
   }
 
@@ -111,29 +114,18 @@ void Manger::bombs(Board& board, Robot& robot)
       if (m_bombsMatrix.at(i).isExploded())
       {
           vector <Location> indexOfExploded = m_bombsMatrix.at(i).handleExploded(board);
-          for (int k = 0; k < indexOfExploded.size(); k++)
-          {
-              for (int j = 0; j < m_guardsMatrix.size(); j++)
-                  if (equal(indexOfExploded.at(k), m_guardsMatrix.at(j).get_location()))
-                  {
-                      board.setLocation(m_guardsMatrix.at(j).get_location(), m_guardsMatrix.at(j).get_location(),' ');
-                      m_guardsMatrix.erase(m_guardsMatrix.begin() + j);
-                      m_score += 3;
-                      board.printScoreAndLife(m_score, m_life);
-                      j--;
-                  }
-              if (equal(robot.get_location(), indexOfExploded.at(k)))
-                  needToRestart = true;// לפניהאתחול לבדוק אם שומר נפסל  שם
-          }
+          needToRestart = eraseExplodedRobotAndGuards(robot, board, indexOfExploded);
 
           m_bombsMatrix.erase(m_bombsMatrix.begin());
           i--;
        }
       else if (m_bombsMatrix.at(i).isExploding())
       {
-          m_bombsMatrix.at(i).handle_NowExploding(board);
-          if (m_bombsMatrix.at(i).warningRobot())
-              robot.warningPrint();
+          vector <Location> indexOfExploding = m_bombsMatrix.at(i).handle_NowExploding(board);
+          needToRestart = eraseExplodedRobotAndGuards(robot, board, indexOfExploding);
+         /* if (m_bombsMatrix.at(i).warningRobot())
+              robot.warningPrint();*/
+          //eraseExplodedRobotAndGuards(robot, board, m_bombsMatrix.at(i).handle_NowExploding(board));
 
       }
       else
@@ -149,9 +141,36 @@ void Manger::bombs(Board& board, Robot& robot)
 
 }
 //-----------------------------------------------
+
+bool Manger::eraseExplodedRobotAndGuards(Robot& robot, Board& board, std::vector<Location>& vec)
+{
+    bool needToRestart = false;
+    for (int k = 0; k < vec.size(); k++)
+    {
+        for (int j = 0; j < m_guardsMatrix.size(); j++)
+            if (equal(vec.at(k), m_guardsMatrix.at(j).get_location()))
+            {
+                m_guardsMatrix.erase(m_guardsMatrix.begin() + j);
+                m_score += 5;
+                board.printScoreAndLife(m_score, m_life);
+                j--;
+            }
+        if (equal(robot.get_location(), vec.at(k)))
+            needToRestart = true;// לפניהאתחול לבדוק אם שומר נפסל  שם
+    }
+    return needToRestart;
+}
+
+//-----------------------------------------------
 void Manger::restart(Robot& robot, Board& board)
 {
     m_life--;
+    if (m_life <= 0)
+    {
+        system("cls");
+        std::cin.get();
+        exit(0);
+    }
     board.setLocation(robot.get_location(), robot.get_first_location(),'/');
     robot.initialization();
     board.printScoreAndLife(m_score, m_life);

@@ -27,6 +27,7 @@ public:
 	Location get_exitDoorLoc()const { return m_exitDoor; }
 	bool isExitDoor(Location &loc) const;
 	bool getIsFileOpen() const { return m_openFile ; }
+	void printLevel(int num_level) const;
 private:
 	string m_fileName;
 	vector<string> m_level;
